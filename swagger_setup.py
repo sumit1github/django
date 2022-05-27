@@ -4,7 +4,7 @@
 
     INSTALLED_APPS = [
        ...
-       'django.contrib.staticfiles',  # required for serving swagger ui's css/js files
+       'django.contrib.staticfiles',  # required for serving swagger ui's css/js files, if create error revove thia
        'drf_yasg',
        ...
     ]
