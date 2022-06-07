@@ -1,0 +1,2 @@
+// for password hashing
+from django.contrib.auth.models import check_password,make_password
