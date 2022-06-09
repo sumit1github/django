@@ -7,3 +7,7 @@ ls
 cat id_dsa.pub
 # to generate
 ssh-keygen -o
+
+//git issues fix
+1. not able to pull two branches one after another
+    git config pull.rebase false
