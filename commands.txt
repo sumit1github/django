@@ -1,2 +1,9 @@
 // for password hashing
 from django.contrib.auth.hashers import check_password, make_password
+
+//get ssh public key for git
+cd ~/.ssh
+ls
+cat id_dsa.pub
+# to generate
+ssh-keygen -o
