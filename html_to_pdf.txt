@@ -1,0 +1,58 @@
+only for ubuntu
+
+pip install pdfkit
+pip install wkhtmltopdf
+
+sudo apt-get install wkhtmltopdf
+
+
+
+import pdfkit
+from django.template.loader import get_template
+from .tasks import send_email, get_rendered_html
+from django.http.response import HttpResponse
+import os
+
+def paypal_like_invoice_download_pdf(request, order_id):
+    order_obj = Order.objects.filter(order_id=order_id).first()
+    items = UserOrders.objects.filter(order=order_obj)
+    template = get_template("paypal_like_invoice.html")
+    context = {"data": order_obj, "items": items, "hide_download_button": True}
+    html = template.render(context)
+    pdfkit.from_string(html, 'payslip.pdf')
+    pdf = open("payslip.pdf", 'rb')
+    response = HttpResponse(pdf.read(), content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=payslip.pdf'
+    pdf.close()
+    os.remove("payslip.pdf")
+    return response
+    
+   
+   
+   @@ oprations can be performed 
+pdfkit.from_url('http://google.com', 'out.pdf')
+pdfkit.from_file('test.html', 'out.pdf')
+pdfkit.from_string('Hello!', 'out.pdf')
+
+
+## more customization 
+
+options = {
+    'page-size': 'Letter',
+    'margin-top': '0.75in',
+    'margin-right': '0.75in',
+    'margin-bottom': '0.75in',
+    'margin-left': '0.75in',
+    'encoding': "UTF-8",
+    'custom-header': [
+        ('Accept-Encoding', 'gzip')
+    ],
+    'cookie': [
+        ('cookie-empty-value', '""')
+        ('cookie-name1', 'cookie-value1'),
+        ('cookie-name2', 'cookie-value2'),
+    ],
+    'no-outline': None
+}
+
+pdfkit.from_url('http://google.com', 'out.pdf', options=options)
