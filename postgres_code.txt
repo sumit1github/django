@@ -1,0 +1,40 @@
+##install postgres server
+
+sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
+
+##
+sudo -u postgres psql
+
+CREATE DATABASE db_name;
+
+CREATE USER myprojectuser WITH PASSWORD 'password';
+
+ALTER ROLE myprojectuser SET client_encoding TO 'utf8';
+
+ALTER ROLE myprojectuser SET default_transaction_isolation TO 'read committed';
+
+ALTER ROLE myprojectuser SET timezone TO 'UTC';
+
+GRANT ALL PRIVILEGES ON DATABASE myproject TO myprojectuser;
+
+\q
+
+
+## change postgres user pass word
+
+sudo -u postgres psql
+
+ALTER USER user_name WITH PASSWORD 'new_password';
+
+## system commands
+service postgresql status
+sudo systemctl restart postgresql
+sudo systemctl stop postgresql
+
+## ###################################################backup and restore#################################
+
+su - postgres
+pg_dump dbname > dbname.bak  #it will create a dbname.bak in /var/lib/12/postgres
+
+(i) create database and assigned the user=postgres
+psql -U postgres -h localhost new_database_name < /home/sumit/Downloads/backup_file.bak
