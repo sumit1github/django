@@ -1,9 +1,5 @@
-pip install jsonfield
-
-
-from jsonfield import JSONField
 from django.db import models
 
 class Question(models.Model):
-question_text = JSONField(max_length=200)
+question_text = models.JSONField(null=True,blank=True)
 pub_date = models.DateTimeField('date published')
