@@ -1,0 +1,18 @@
+pip install django-cors-headers 
+
+INSTALLED_APPS = [
+   'corsheaders',
+]
+
+MIDDLEWARE = [
+  'corsheaders.middleware.CorsMiddleware',
+]
+
+## if we want to allow request from everywhere
+CORS_ORIGIN_ALLOW_ALL = True
+
+## if we want to allow request from specific requests
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+  'http://localhost:8000',
+)
