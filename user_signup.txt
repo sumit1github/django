@@ -1,0 +1,106 @@
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+class RegistrationView(APIView):
+    model = User
+    serializer_class = RegisterOrganizationSerializer
+
+    def post(self, request, format=None):
+       
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            user_obj = serializer.save()
+            password = request.data.get("password")
+            user_obj.password = make_password(password)
+            user_obj.save()
+            
+            #33333333333333333333333333333333333333333333333333
+            # sending mail for confirm password
+            send_email_to_new_user.delay(
+                user_obj.id,
+            )
+            #33333333333333333333333333333333333333333333333333
+
+            return Response({"error": False, "status": status.HTTP_201_CREATED})
+        else:
+            return Response(
+                {
+                    "error": True,
+                    "errors": serializer.errors,
+                    "status": status.HTTP_400_BAD_REQUEST,
+                }
+            )
+
+********************************************creating a custome token generator********************************
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
+# from django.utils import six
+import six
+
+class TokenGenerator(PasswordResetTokenGenerator):
+    """this class is used to generate a unique token to identify the user"""
+
+    def _make_hash_value(self, user, timestamp):
+        return (
+            six.text_type(user.pk)
+            + six.text_type(timestamp)
+            + six.text_type(user.is_active)
+        )
+
+
+account_activation_token = TokenGenerator()
+****************************************** now the celery part*****************************************
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils import timezone
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
+
+from common.models import User
+from common.token_generator import account_activation_token # calling token generator
+
+app = Celery("redis://")
+
+@app.task
+def send_email_to_new_user(user_id):
+
+    """Send Mail To Users When their account is created"""
+    user_obj = User.objects.filter(id=user_id).first()
+
+    if user_obj:
+        context = {}
+        user_email = user_obj.email
+        context["url"] = settings.DOMAIN_NAME
+        context["uid"] = (urlsafe_base64_encode(force_bytes(user_obj.pk)),)
+        context["token"] = account_activation_token.make_token(user_obj)
+        time_delta_two_hours = datetime.datetime.strftime(
+            timezone.now() + datetime.timedelta(hours=2), "%Y-%m-%d-%H-%M-%S"
+        )
+        # creating an activation token and saving it in user model
+        activation_key = context["token"] + time_delta_two_hours
+        user_obj.activation_key = activation_key
+        user_obj.save()
+
+        context["complete_url"] = context[
+            "url"
+        ] + "/auth/activate-user/{}/{}/{}/".format(
+            context["uid"][0],
+            context["token"],
+            activation_key,
+        )
+        recipients = [user_email,]
+        subject = "Welcome to Project NAme"
+        html_content = render_to_string("user_status_in.html", context=context)
+        
+        msg = EmailMessage(
+            subject,
+            html_content,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=recipients,
+        )
+        msg.content_subtype = "html"
+        msg.send()
+
