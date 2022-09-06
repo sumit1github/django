@@ -23,6 +23,14 @@ REST_FRAMEWORK = {
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.generics import ListAPIView
 
+
+# user with APIView
+class UsersListView(APIView, LimitOffsetPagination):
+
+or 
+
+# with generic views
+
 class Product_list(ListAPIView):
     queryset=Product.objects.all()
     permission_classes = (IsAuthenticated,)
