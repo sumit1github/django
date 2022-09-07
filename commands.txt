@@ -11,3 +11,6 @@ ssh-keygen -o
 //git issues fix
 1. not able to pull two branches one after another
     git config pull.rebase false
+
+# closing background running python server
+sudo fuser -k 8000/tcp
