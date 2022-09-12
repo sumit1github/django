@@ -37,3 +37,21 @@ def new_complaints(dist_object):
     <td><p class="ms-4">{% subadmin_count dist %}</p></td>
     </tr>
 {% endfor %}
+
+*****************************************************************************************************************************************************
+# let a template tag is returning a list, then how should I render the data
+
+
+@register.simple_tag
+def admin_assigned_to_complaint(complaint):
+    count=Grievance.objects.filter(id=complaint.id)
+    data=count.filter(assigned_to__is_admin=True).values('assigned_to__first_name')
+    final_list=[i.get('assigned_to__first_name') for i in data]
+    return (final_list)
+   
+   
+### in html
+{% admin_assigned_to_complaint ticket as admin_list%}
+  {% for name in admin_list %}
+      {{name}}
+  {% endfor %}
