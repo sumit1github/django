@@ -1,0 +1,47 @@
+class Product(models.Model):
+    name=models.CharField(max_length=255,blank=True, null=True)
+    price=models.FloatField(default=0.0,blank=True, null=True)
+
+**************************views.py *****************************
+from django.db.models import Sum, Max, Min, Avg
+
+data_list=Product.objects.all().aggregate(Avg('price'))
+output: {'price__avg': 106.66666666666667}
+
+-------- if I want to change the key name of the output -------------
+
+data_list=Product.objects.all().aggregate(key_name=Avg('price'))
+output: {'key_name': 106.66666666666667}
+
+
+---------------------------------------------------- useing of Annotate ------------------------------------
+class Caregory(models.Model):
+    name=models.CharField(max_length=255,blank=True, null=True)
+
+
+class Product(models.Model):
+    cat=models.ForeignKey(Caregory, null=True, blank=True, on_delete=models.CASCADE)
+    name=models.CharField(max_length=255,blank=True, null=True)
+    price=models.FloatField(default=0.0,blank=True, null=True)
+
+
+*****************
+Let, I want to print the category list. And number products associated with the category.
+There are more ways, like template tags, method_serializer,
+ here i will use annotate
+ 
+ from django.db.models import Sum, Max, Min, Avg, Count
+ 
+ data_list=Caregory.objects.all().annotate(Count('product'))  # product is the model name
+ 
+ print(vars(data_list[1]))
+ outut:- 
+ {'_state': <django.db.models.base.ModelState object at 0x7fc4887469e0>, 'id': 2, 'name': 'cat2', 'product__count': 3}
+ 
++++++++ same way if I want to change the key name
+data_list=Caregory.objects.all().annotate(result=Count('product'))
+ print(vars(data_list[1]))
+
+{'_state': <django.db.models.base.ModelState object at 0x7fc488746b60>, 'id': 2, 'name': 'cat2', 'result': 3}
+ 
+ 
