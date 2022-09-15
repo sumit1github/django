@@ -1,0 +1,15 @@
+models.py:
+
+complaint_type=models.ManyToManyField(Compalint_type,related_name='assign_to')
+
+
+*****save data*****
+import json
+
+
+data=serializer.save()
+
+if "complaint_type"in request.data:
+    complaint_types = ComplaintType.objects.filter(
+        id__in=json.loads(request.data.get("complaint_type")))
+    data.complaint_type.add(*complaint_types)
