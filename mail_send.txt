@@ -1,0 +1,103 @@
+********************* set up smtp server in settings.py ***********************
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = #sender's email-id
+EMAIL_HOST_PASSWORD = #password associated with above email-id
+
+
+***************** send simple mail*************************
+
+from django.conf import settings
+from django.core.mail import send_mail
+
+
+subject = 'welcome to GFG world'
+message = f'Hi {user.username}, thank you for registering in geeksforgeeks.'
+email_from = settings.EMAIL_HOST_USER
+recipient_list = [user.email, ]
+send_mail( subject, message, email_from, recipient_list )
+
+
+----------------------- send mail template *************************
+from django.template.loader import get_template
+from django.shortcuts import render
+from django.core.mail import send_mail, EmailMessage
+
+
+receiver_email='abcd.com'    
+html_tpl_path = 'email_template.html'
+
+context=  {'sender_name': mail_obj_send.name,'mail_obj_send':mail_obj_send,
+        'reciver_firstname':profile_obj.first_name,'reciver_lastname':profile_obj.last_name,
+        'sender_email':mail_obj_send.email,'profile_obj':profile_obj,"sms":sms,
+}
+email_html_template = get_template(html_tpl_path).render(context)
+email_msg = EmailMessage('Welcome To abcd', 
+                            email_html_template, 
+                            'abcd.com',
+                            [receiver_email],
+                            reply_to=['info@abcd.com']
+                            )
+# this is the crucial part that sends email as html content but not as a plain text
+email_msg.content_subtype = 'html'
+email_msg.send(fail_silently=False)
+
+messages.success(request, 'Done!!')
+
+
+****************************   send attachment **************************
+
+from django.template.loader import get_template
+from django.shortcuts import render
+from django.core.mail import send_mail, EmailMessage
+
+
+receiver_email='abcd.com'    
+html_tpl_path = 'email_template.html'
+
+context=  {'sender_name': mail_obj_send.name,'mail_obj_send':mail_obj_send,
+        'reciver_firstname':profile_obj.first_name,'reciver_lastname':profile_obj.last_name,
+        'sender_email':mail_obj_send.email,'profile_obj':profile_obj,"sms":sms,
+}
+email_html_template = get_template(html_tpl_path).render(context)
+email_msg = EmailMessage('Welcome To abcd', 
+                            email_html_template, 
+                            'abcd.com',
+                            [receiver_email],
+                            reply_to=['info@abcd.com']
+                            )
+# this is the crucial part that sends email as html content but not as a plain text
+#email_msg.content_subtype = 'html'
+
+email_msg.attach_file(file_path)  <------------
+
+email_msg.send(fail_silently=False)
+
+messages.success(request, 'Done!!')
+
+
+
+**********************************   send mail in development: using console backend ***********************************
+smtp setup: settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+## vews.py
+from django.conf import settings
+from django.core.mail import send_mail
+
+
+subject = 'welcome to GFG world'
+message = f'Hi {user.username}, thank you for registering in geeksforgeeks.'
+email_from = settings.EMAIL_HOST_USER
+recipient_list = [user.email, ]
+
+send_mail( subject, message, email_from, recipient_list )
+
+### out out come to terminal
+
+
+
