@@ -1,0 +1,11 @@
+from django.utils.decorators import method_decorator
+
+from helpers.decorators import login_equired_api
+
+@method_decorator(login_equired_api,name='dispatch')
+class GrievanceCreateApiView(APIView):
+    model=Grievance
+    serializer_class=GrievanceSerializer
+    
+    def post(self,request):
+        serializer=self.serializer_class(data=request.data)
