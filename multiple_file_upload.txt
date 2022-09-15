@@ -1,0 +1,16 @@
+<form enctype='multipart/form-data'>
+<input type='file' multiple name='file' id='name'/>
+</form>
+
+******* views.py ***********
+
+files=request.FILES.getlist('files')
+file_list=[]
+
+for file in files:
+  new_file=File_model(file=file).create()
+  file_list.append(new_file.file.url)
+  
+context={
+'file_list':file_list
+}
