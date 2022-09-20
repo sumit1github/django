@@ -89,3 +89,42 @@ class ViewName(APIView):
         operation_description="Your api description",
         manual_parameters=swagger_params.post_org_creation_page_params,
     )
+    
+ #333333333333333333333333333333 data types list **********************
+    TYPE_OBJECT = "object"  #:
+TYPE_STRING = "string"  #:
+TYPE_NUMBER = "number"  #:
+TYPE_INTEGER = "integer"  #:
+TYPE_BOOLEAN = "boolean"  #:
+TYPE_ARRAY = "array"  #:
+TYPE_FILE = "file"  #:
+
+# officially supported by Swagger 2.0 spec
+FORMAT_DATE = "date"  #:
+FORMAT_DATETIME = "date-time"  #:
+FORMAT_PASSWORD = "password"  #:
+FORMAT_BINARY = "binary"  #:
+FORMAT_BASE64 = "bytes"  #:
+FORMAT_FLOAT = "float"  #:
+FORMAT_DOUBLE = "double"  #:
+FORMAT_INT32 = "int32"  #:
+FORMAT_INT64 = "int64"  #:
+
+# defined in JSON-schema
+FORMAT_EMAIL = "email"  #:
+FORMAT_IPV4 = "ipv4"  #:
+FORMAT_IPV6 = "ipv6"  #:
+FORMAT_URI = "uri"  #:
+
+# pulled out of my ass
+FORMAT_UUID = "uuid"  #:
+FORMAT_SLUG = "slug"  #:
+FORMAT_DECIMAL = "decimal"
+
+IN_BODY = 'body'  #:
+IN_PATH = 'path'  #:
+IN_QUERY = 'query'  #:
+IN_FORM = 'formData'  #:
+IN_HEADER = 'header'  #:
+
+SCHEMA_DEFINITIONS = 'definitions'  #:
