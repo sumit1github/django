@@ -1,0 +1,42 @@
+pip install pillow
+pip install qrcode
+
+****************************************************case 1: On new data base entry:*****************************
+from django.db import models
+import qrcode
+from PIL import Image, ImageDraw
+from io import BytesIO
+from django.core.files import File
+import random
+
+class Company(models.Model):
+   url=models.URLField()
+   image=models.ImageField(upload_to='qrcode',blank=True)
+
+   def save(self,*args,**kwargs):
+      qrcode_img=qrcode.make(self.url)
+      canvas=Image.new("RGB", (300,300),"white")
+      draw=ImageDraw.Draw(canvas)
+      canvas.paste(qrcode_img)
+      buffer=BytesIO()
+      canvas.save(buffer,"PNG")
+      self.image.save(f'image{random.randint(0,9999)}',File(buffer),save=False)
+      canvas.close()
+      super().save(*args,**kwargs)
+ 
+ 
+ ****************************************************case 2: adding in existing project:*****************************
+ 
+ def qrcode_creation(request,id):
+
+    com=Company.objects.get(id=id)
+    if com.qr_code:
+        pass
+    else:
+        try:
+            Company.save(com)
+        except Exception as e:
+            return HttpResponse(str(e))
+    
+    context={'com':com}
+    return render(request,'company_qr.html',context)
