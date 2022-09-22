@@ -26,15 +26,16 @@ class Company(models.Model):
  
  
  ****************************************************case 2: adding in existing project:*****************************
+ from home.models import Company
  
  def qrcode_creation(request,id):
 
-    com=Company.objects.get(id=id)
+    com=Company.objects.get(id=id) <--- this com is present but does not have a qr code
     if com.qr_code:
         pass
     else:
         try:
-            Company.save(com)
+            Company.save(com) <---- here i am calling the save method
         except Exception as e:
             return HttpResponse(str(e))
     
