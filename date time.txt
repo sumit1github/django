@@ -1,0 +1,9 @@
+import datetime
+from datetime import date
+
+todays_date = date.today()  # today's date
+month_num = todays_date.month
+year = todays_date.year
+
+
+time = datetime.datetime.now().strftime('%H:%M:%S')
