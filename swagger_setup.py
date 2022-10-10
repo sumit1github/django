@@ -41,6 +41,15 @@ urlpatterns = [
         schema_view.with_ui("redoc", cache_timeout=0),
         name="schema-redoc",
     ),
+ 
+    
+ ************************************* for post request*****************************
+    
+  '''this line is very important in post request. Data is sent as parms in url using swagger.'''
+ params = request.query_params if len(request.data) == 0 else request.data    <-----
+
+if params:
+    serializer = self.serializer_class(data=params)
     
  ******************************************************** customization*****************************************
 ############################ create swagger_data.py in every applications #################################
@@ -91,7 +100,7 @@ class ViewName(APIView):
     )
     
  #333333333333333333333333333333 data types list **********************
-    TYPE_OBJECT = "object"  #:
+TYPE_OBJECT = "object"  #:
 TYPE_STRING = "string"  #:
 TYPE_NUMBER = "number"  #:
 TYPE_INTEGER = "integer"  #:
