@@ -8,7 +8,33 @@
        'drf_yasg',
        ...
     ]
+    
+    
+    
+SWAGGER_ROOT_URL="https://url.com/swagger/"  <--- production
+#SWAGGER_ROOT_URL="http://localhost:8000/swagger/" #development
 
+
+# settings for api requests
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'JSON_EDITOR': True,
+    'api_version': '0.1',
+    'enabled_methods': [
+        'GET',
+        'POST',
+    ],
+    'SECURITY_DEFINITIONS': {
+        "api_key": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        },
+    }
+}
+    
+
+    **************************************************** urls.py*****************************************
  3. project.urls
 
 from rest_framework import permissions
