@@ -95,6 +95,8 @@ if params:
 
             response = self.get_response(request)
             return response
+    4. add settings.py inside middleware
+            'app1_authentication.middleware.post.SwaggerMiddleware',
     
     4. inside view function
             post_data=request.post_data   #<---- query-dict is inside request.post_data
