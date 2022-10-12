@@ -77,6 +77,30 @@ urlpatterns = [
 if params:
     serializer = self.serializer_class(data=params)
     
+    
+ ###########  using middle were ##################
+    1. inside an application create middleware(folder)
+    2. inside folder create swagger_post.py
+    3. paste the code
+    
+    class SwaggerMiddleware:
+        def __init__(self, get_response):
+            self.get_response = get_response
+
+        def __call__(self, request,*args,**kwargs):
+            request.body  # just add this line BEFORE get_response
+
+            request.post_data=request.GET if len(request.POST) == 0 else request.POST # for swagger
+
+
+            response = self.get_response(request)
+            return response
+    
+    4. inside view function
+            post_data=request.post_data   #<---- query-dict is inside request.post_data
+            g_id=post_data.get('grievance_id')
+    
+    
  ******************************************************** customization*****************************************
 ############################ create swagger_data.py in every applications #################################
 from drf_yasg import openapi
