@@ -1,0 +1,45 @@
+******** go google cosole *********
+--> select google recaptcha v2 and checkbox
+--> add domain and generate sitekeys
+
+
+****** python package ******
+pip install django-recaptcha
+
+
+***** settings.py *******
+
+RECAPTCHA_PUBLIC_KEY = Your_Site_Key
+RECAPTCHA_PRIVATE_KEY = Your_Secret_key
+
+
+****** forms.py ********
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
+
+class CaptchaForm(forms.Form):
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+
+
+***** template.html***********
+
+    <div class="form-group">
+      <div class="mt-3 col-sm-8">
+        <input type="text" class="form-control" name="username" placeholder="Username" />
+      </div>
+      <div class="mt-3 col-sm-8">
+        <input type="password" class="form-control" name="password" placeholder="Password" />
+      </div>
+      {{form}}  <---- it will create the checkbox
+    </div>
+
+
+
+***** views.py ******
+capcha=request.POST.get('g-recaptcha-response',None) 
+if capcha!=None and len(capcha)>5:
+  <logic>.....
+else:
+  return HttpResponse('Invalid Response')
+  
+***Note : - HttpResponse is very important.
