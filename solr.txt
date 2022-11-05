@@ -1,0 +1,43 @@
+********************************************** installation (ubuntu)***************************************************
+1. Install Java
+Install Java.
+
+$ sudo apt install default-jdk -y
+Verify the Java installation.
+
+$ java -version
+2. Install Apache Solr
+To download the latest version of Apache Solr, go to the Apache official download website.
+
+Download Apache Solr.
+
+$ sudo wget https://archive.apache.org/dist/lucene/solr/8.9.0/solr-8.9.0.tgz
+Extract the downloaded archives.
+
+$ sudo tar xzf solr-8.9.0.tgz
+Install Apache Solr.
+
+$ sudo bash solr-8.9.0/bin/install_solr_service.sh solr-8.9.0.tgz
+Check the status of the Apache Solr service.
+
+$ sudo systemctl status solr
+Enable the Apache Solr service to start on system boot.
+
+$ sudo systemctl enable solr
+Allow port 8983 through the UFW firewall.
+
+$ sudo ufw allow 8983
+To access the Apache Solr web interface, go to your browser and enter http://serverIP:8983. For example:
+
+http://localhost:8983
+Conclusion
+
+**************************************************** core creation *************************************
+cd /opt/
+sudo su - solr -c "/opt/solr/bin/solr create -c core_name -n data_driven_schema_configs"
+
+# core will be reflected on solr admin
+
+************************************************ generate schema on django ************************************
+
+
