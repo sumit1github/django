@@ -13,3 +13,17 @@ if "complaint_type"in request.data:
     complaint_types = ComplaintType.objects.filter(
         id__in=json.loads(request.data.get("complaint_type")))
     data.complaint_type.add(*complaint_types)
+
+
+************************************************ many to many:  with django forms *****************************************
+### 1: Creating form
+------>   assigned_to=forms.ModelChoiceField(queryset=User.objects.all())
+
+###2: Saving Form
+
+form=self.form_class(request.POST)
+if form.is_valid():
+    form_obj=form.save(commit=False)
+    form_obj.address=address_obj
+    form_obj.save()
+    form.save_m2m()    <------ here is the important thing
