@@ -1,0 +1,30 @@
+## it is used to configure the static file in development and production
+Note:*** If you are planning to user s3 bucket so, it will not help you. I will upload with s3 as well
+
+
+***************************************** install ********************
+pip install whitenoise
+
+****************************************** settings.py ********************************
+
+INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic'   #<--- add this in the INSTALLED_APPS
+    }
+
+## add in the MIDDLEWARE
+
+MIDDLEWARE = [
+    # ...
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    # ...
+]
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"   #<----------- add this line too
+
+'''
+add static root
+'''
+STATIC_ROOT = BASE_DIR + '/staticfiles/'
+
+***************************************** python command ******************
+python manage.py collectstatic
