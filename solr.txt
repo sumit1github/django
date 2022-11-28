@@ -40,4 +40,12 @@ sudo su - solr -c "/opt/solr/bin/solr create -c core_name -n data_driven_schema_
 
 ************************************************ generate schema on django ************************************
 
+docker run --name my_solr -d -p 8983:8983 -t solr
 
+To use Solr, you need to create a “core”, an index for your data. For example:
+
+$ docker exec -it --user=solr my_solr bin/solr create_core -c gettingstarted
+
+If you want to load some example data:
+
+$ docker exec -it --user=solr my_solr bin/post -c gettingstarted example/exampledocs/manufacturers.xml
