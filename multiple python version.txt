@@ -33,6 +33,16 @@ pyenv global 3.8.0
 # go to project dir and run the command
 pyenv local 3.8.0
 
+****************************************************** process 2 *************************************************
+1. sudo apt-get install curl
+2. curl https://pyenv.run | bash
+3.copy all three lines and paste in termial at once
+
+export PATH="~/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+4. source ~/.bashrc
 
 
   
