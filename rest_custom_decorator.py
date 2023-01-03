@@ -8,37 +8,26 @@ from rest_framework.authtoken.models import Token
 
 from app1_authentication.models import User
 
-def get_user(token):
-    user= Token.objects.get(key=token).user
-    return (user)
 
-def login_equired_api(function):
-  @wraps(function)
-  def wrap(request, *args, **kwargs):
-    if "Authorization" not in request.headers:
-        res={
-            'status':status.HTTP_400_BAD_REQUEST,
-            'message':'Authorization Token is Not provided'
-        }
-        return HttpResponseBadRequest(json.dumps(res), content_type='application/json')
+------------------------------------------------------ decorator with arguments ---------------------------------------
+## we can pass arguments to this decorator
 
-    token = (request.headers.get("Authorization").split(" ")[1])
-    request.user=get_user(token)
-    
-    if request.user:
-        
+def has_permission(permission_name):
+  def _method_wrapper(function):
+    def _arguments_wrapper(request, *args, **kwargs):
+      if permission_name not in access_list :
+        return HttpResponse('Enter An valid access name.')
+      user=request.user
+      if user.is_superuser or user.is_org_admin or permission_name in user.access:
         return function(request, *args, **kwargs)
-        
-    else:
-        data={
-            'status':status.HTTP_400_BAD_REQUEST,
-            'error':'Login Required!'
-        }
-    return HttpResponseBadRequest(json.dumps(data), content_type='application/json')
-
-  return wrap
+      else:
+        return HttpResponse('Permission denied!!' )
+    return _arguments_wrapper
+  return _method_wrapper
+-----------------------------------------------------------------------------------------------------------------------
 
 
+------------------------------------------------- decorator in rest freamework ----------------------------------------
 def admin_and_superadmin_api(function):
   @wraps(function)
   def wrap(request, *args, **kwargs):
@@ -70,3 +59,4 @@ def admin_and_superadmin_api(function):
     return HttpResponseBadRequest(json.dumps(data), content_type='application/json')
 
   return wrap
+-----------------------------------------------------------------------------------------------------------------------
