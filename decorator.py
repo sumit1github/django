@@ -24,6 +24,12 @@ def has_permission(permission_name):
         return HttpResponse('Permission denied!!' )
     return _arguments_wrapper
   return _method_wrapper
+############################ use ##########################
+from django.utils.decorators import method_decorator
+
+
+@method_decorator(has_permission('contact(this is the augument)'),name='dispatch')
+###########################################################
 -----------------------------------------------------------------------------------------------------------------------
 
 
