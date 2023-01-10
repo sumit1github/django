@@ -41,4 +41,4 @@ pg_dump dbname > dbname.bak
 pwd  # where the .bak file is present
 cd location
 (i) create database and assigned the user=postgres
-psql -U postgres -h localhost new_database_name < /home/sumit/Downloads/backup_file.bak
+sudo psql -U postgres -h localhost new_database_name < /home/sumit/Downloads/backup_file.bak
