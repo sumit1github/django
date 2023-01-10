@@ -36,7 +36,7 @@ sudo systemctl stop postgresql
 
 ## ###################################################backup and restore#################################
 
-su - postgres
+sudo su - postgres
 pg_dump dbname > dbname.bak  
 pwd  # where the .bak file is present
 cd location
