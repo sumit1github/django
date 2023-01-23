@@ -1,0 +1,44 @@
+# use ajax for return status code like 200 and 400, perform operation
+using axios
+
+#add cdn in html
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{% static 'admin_product/productsearch.js' %}"></script>
+
+# javascript (get)
+
+function myFunction(){
+    var x = document.getElementById("admin_product_search_query").value;
+    var url='/product/product_search/'+'?query='+x
+    axios.get(url)
+    .then(function (response) {
+        // handle success
+        console.log(response);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+
+  
+}
+
+#view.py
+
+from django.http import JsonResponse
+class ProductSearchView(View):
+    form = ProductForm
+    model = Product
+    serializer_class=ProductSearchSerializer
+    template = app + "product_list.html"
+
+    def get(self,request,*args,**kwargs):
+        query=request.GET.get('query')
+        product_list=[]
+        try:
+            query=int(query)
+            product_list=self.model.objects.filter(id=query).values_list('id','name')
+        except:
+            product_list=self.model.objects.filter(name__icontains=query).values_list('id','name')
+        product_list=list(product_list)   <-----------------
+        return JsonResponse(product_list, safe=False)
