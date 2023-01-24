@@ -1,5 +1,12 @@
 from django.db import models
 
 class Question(models.Model):
-question_text = models.JSONField(null=True,blank=True)
+question_text = models.JSONField(default=dict)
 pub_date = models.DateTimeField('date published')
+
+
+## add data from a list
+
+for i in data:
+    Question.question_text[i]=i
+Question.save()
