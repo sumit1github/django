@@ -1,0 +1,37 @@
+# app > middleware(folder) > middleware.py
+
+from myapp.models import Profile
+
+class ProfileMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # get the user profile
+        profile = Profile.objects.get(user=request.user)
+
+        # add the profile to the request object
+        request.profile = profile
+
+        response = self.get_response(request)
+
+        return response
+        
+ 
+ 
+ 
+# settings.py
+
+ MIDDLEWARE = [
+    # ...
+    'myapp.middleware.middleware.ProfileMiddleware',
+]
+
+
+# views.py
+def my_view(request):
+    # get the user's profile
+    profile = request.profile
+
+    # do something with the profile
+    # ...
