@@ -73,3 +73,11 @@ class OpportunityEditForm(forms.ModelForm):
             'contact','account'
             
         ]
+        
+    def clean(self):
+        if self.cleaned_data['email'] and self.cleaned_data['contact_number']:
+            if User.objects.filter(Q(email=self.cleaned_data['email'].lower()) or Q(contact_number=self.cleaned_data['contact_number'])).exists()==True:
+                raise forms.ValidationError("Email or Contact is already present.")
+
+        else:
+            raise forms.ValidationError("Email and Contact Number is Needed.")
