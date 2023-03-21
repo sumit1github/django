@@ -1,0 +1,45 @@
+**-----------------------------------------  html ------------------------------
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function get_price(){
+        var data={
+            'reciver_locality':'sdfs',
+            'reciver_city':'reciver_city',
+            'reciver_state':'reciver_state',
+            'reciver_pincode':'reciver_pincode',
+            'vehicle':'vehicle',
+            'pickup_form':'pickup_form'
+        }
+
+        var headers= {
+            'X-CSRFToken': '{{csrf_token}}',
+            'Content-Type': 'application/json'
+        }
+        url= '{% url "app_stores:price_forast_ajax" %}'
+
+        axios.post(url, data=data, { headers: headers })
+        .then(response => {
+            console.log(response.data); // handle successful response
+        })
+        .catch(error => {
+            console.error(error); // handle error
+        });
+    }   
+</script>
+
+
+
+---------------------------------------------- getting data in views.py ------------------------------
+
+import json
+from django.http import JsonResponse
+
+
+
+@method_decorator(store_admin, name='dispatch')
+class StorePricingForcastAjax(View):
+
+    def post(self, request):
+        print(json.loads(request.body))
+        return JsonResponse('kndskjkdjbf', safe=False)
