@@ -1,7 +1,7 @@
 pip install django-ckeditor
 
 # models.py
-from ckeditor.widgets import CKEditorWidget
+from ckeditor.fields import RichTextField
   
   description= RichTextField()
   
