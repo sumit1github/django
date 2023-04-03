@@ -1,0 +1,72 @@
+sudo apt-get install default-jdk
+wget https://downloads.apache.org/lucene/solr/8.11.2/solr-8.11.2.tgz
+tar xzf solr-8.11.2.tgz solr-8.11.2/bin/install_solr_service.sh --strip-components=2
+sudo bash ./install_solr_service.sh solr-8.11.2.tgz
+
+
+# create collection
+
+
+sudo su - solr -c "/opt/solr/bin/solr create_core -c hv_collection"
+
+sudo su - solr -c "/opt/solr/bin/solr delete -c hv_collection"
+
+
+systemctl restart solr
+
+
+
+
+sudo service solr stop 
+sudo rm -r /var/solr
+sudo rm /etc/init.d/solr 
+sudo rm -rf /opt/solr 
+sudo rm -rf /opt/solr-8.9.0
+sudo rm -rf /etc/default/solr.in.sh 
+
+
+for searching using api
+
+for multi field search
+
+curl http://localhost:8983/solr/hv_collection/select?q=name:apecb,id:2
+
+for single field search
+
+curl http://localhost:8983/solr/hv_collection/select?q=name:apecb
+
+for all data till 1000 records
+get request
+don't send contebttype
+http://localhost:8983/solr/hv_collection/select?scroll=1m&rows=1000&q=*:*
+
+#for single update
+curl -X POST -H 'Content-Type: application/json' 'http://localhost:8983/solr/mycollection/update?commit=true' --data-binary '{
+  "id": "1",
+  "name": "Product 1",
+  "description": "This is the description of Product 1",
+  "price": 19.99,
+  "category": "Electronics"
+}'
+
+
+
+for multiple update
+
+curl -X POST -H 'Content-Type: application/json' 'http://localhost:8983/solr/mycollection/update?commit=true' --data-binary '[
+  {
+    "id": "1",
+    "name": "Product 1",
+    "description": "This is the description of Product 1",
+    "price": 19.99,
+    "category": "Electronics"
+  },
+  {
+    "id": "2",
+    "name": "Product 2",
+    "description": "This is the description of Product 2",
+    "price": 29.99,
+    "category": "Appliances"
+  }
+]'
+
