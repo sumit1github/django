@@ -7,6 +7,8 @@ from django.core.files.storage import FileSystemStorage
     print('media/' +filename)
     
 ------------------------------------------------------- store data in s3 ----------------------------------
+#### To Upload a file
+
 pip install boto3
 # settings.py
 
@@ -51,3 +53,18 @@ def s3_file_upload(folder_name ,filename, file_obj):
     file_path = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{folder_name}/{filename}"
     
     return file_path
+  
+  
+  
+  ############# to delte a file 
+    filename = str(int(str(uuid.uuid4().int)[:5])) + filename
+    s3 = boto3.resource('s3',
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_S3_REGION_NAME,           
+    )
+    
+    s3_bucket = s3.Bucket(settings.AWS_STORAGE_BUCKET_NAME)
+    s3_object = s3_bucket.Object(filename)
+    response = s3_object.delete()
+    return response
