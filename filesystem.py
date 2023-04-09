@@ -68,3 +68,45 @@ def s3_file_upload(folder_name ,filename, file_obj):
     s3_object = s3_bucket.Object(filename)
     response = s3_object.delete()
     return response
+  
+  
+  ------------------------------------------------------- store data in s3 and compress ----------------------------------
+import uuid
+import boto3
+from django.conf import settings
+from PIL import Image
+import io
+
+s3 = boto3.resource('s3')
+
+def s3_file_upload(folder_name, filename, file_obj):
+    # Generate a unique filename
+    filename = str(int(str(uuid.uuid4().int)[:5])) + filename
+
+    # Upload the original file to S3
+    s3_bucket = s3.Bucket(settings.AWS_STORAGE_BUCKET_NAME)
+    s3_object = s3_bucket.Object(f"{folder_name}/{filename}")
+    s3_object.upload_fileobj(file_obj)
+
+    # Compress the image if it is an image file
+    if 'image' in file_obj.content_type:
+        # Open the image file using Pillow
+        with Image.open(file_obj) as img:
+            # Set the maximum size of the image
+            max_size = (800, 800)
+            # Resize the image while preserving the aspect ratio
+            img.thumbnail(max_size, Image.ANTIALIAS)
+            # Convert the image to JPEG format
+            output = io.BytesIO()
+            img.save(output, format='JPEG', quality=75)
+            output.seek(0)
+            # Upload the compressed image to S3
+            s3_compressed_object = s3_bucket.Object(f"{folder_name}/compressed/{filename}")
+            s3_compressed_object.put(Body=output.getvalue(), ContentType='image/jpeg')
+            # Return the S3 URL of the compressed image
+            file_path = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{folder_name}/compressed/{filename}"
+    else:
+        # Return the S3 URL of the original file
+        file_path = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{folder_name}/{filename}"
+
+    return file_path
