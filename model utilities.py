@@ -49,3 +49,26 @@ class MyModel(models.Model):
 
     def __str__(self):
         return self.field1
+      
+ 
+-------------------------------------------------------- compress Image ----------------------------------
+from PIL import Image
+import io
+
+class MyModel(models.Model):
+image = models.ImageField(upload_to='images/')
+
+def save(self, *args, **kwargs):
+    # Open the image file using Pillow
+    with Image.open(self.image) as img:
+        # Set the maximum size of the image
+        max_size = (800, 800)
+        # Resize the image while preserving the aspect ratio
+        img.thumbnail(max_size, Image.ANTIALIAS)
+        # Convert the image to JPEG format
+        output = io.BytesIO()
+        img.save(output, format='JPEG', quality=75)
+        output.seek(0)
+        # Save the compressed image to the model field
+        self.image = models.ImageFieldFile(output, self.image.name)
+    super().save(*args, **kwargs)
