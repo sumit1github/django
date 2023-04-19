@@ -1,0 +1,45 @@
+--------------- views.py ---------------------- 
+class PlanDelete(View):
+    model = common_models.DataPlans
+    form_class = common_forms.PlansForm 
+
+    def get(self, request, plan_pk):
+        plan = self.model.objects.filter(id = plan_pk).delete()
+        return JsonResponse(200, safe=False)
+-------------------------------------------------urs.py -------------------------
+    path('plans/plan_delete/<str:plan_pk>', views.PlanDelete.as_view(), name="plan_delete"),
+
+
+------------------------------------------html ----------------------------------
+
+
+
+<span id="plan_delete_button">
+    <button operation="delete_request" url="{% url 'admin_dashboard:plan_delete' plan.id %}" tr_id = "plan{{plan.id}}" pid="{{plan.id}}" onclick="delete_plan(this)" type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover">
+        <i class="bi bi-trash"></i>
+    </button>
+</span>
+
+
+---------------------------------------------javascript -------------------------------
+function delete_plan(element){
+    var operation = element.getAttribute('operation');
+    var tr_id = element.getAttribute('tr_id');
+    var url = element.getAttribute('url');
+    var pid = element.getAttribute('pid');
+
+    if (operation === "delete_request"){
+        var target = document.getElementById('plan_delete_button');
+        alert(url)
+        html='<button class="btn btn-danger" operation="confirm_delete_request" url="'+url+'" tr_id = "'+tr_id+'" onclick="delete_plan(this)" type="button">Confirm Delete</button>'
+        target.innerHTML = html;
+    }
+    else{
+        axios.get(url)
+        .then(function (response) {
+            document.getElementById(tr_id).style.display="none";
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+    }
