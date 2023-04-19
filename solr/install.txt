@@ -10,6 +10,8 @@ sudo bash ./install_solr_service.sh solr-8.11.2.tgz
 sudo su - solr -c "/opt/solr/bin/solr create_core -c hv_collection"
 
 sudo su - solr -c "/opt/solr/bin/solr delete -c hv_collection"
+# it will delete the core and settings but not the documents documents need to delete manually
+sudo rm -rf /var/solr/data/hv_collection
 
 
 systemctl restart solr
@@ -69,4 +71,8 @@ curl -X POST -H 'Content-Type: application/json' 'http://localhost:8983/solr/myc
     "category": "Appliances"
   }
 ]'
+
+
+# adding solr path to opt
+export PATH=$PATH:/opt/solr/bin 
 
