@@ -1,0 +1,70 @@
+<!-- ------------------ table -->
+
+<a pid="{{plan.id}}" url="{% url 'admin_dashboard:plan_update' plan.id %}" onclick="paln_update(this)" class="btn btn-sm btn-square btn-neutral">
+    <i class="bi bi-pencil"></i>
+</a>
+
+<!-- -----------------------------modal------------------------ -->
+<!-- paln update modal -->
+<div class="modal fade" id="update_plan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Plan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" id="update_plan_form">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">{{field.label}}:</label>
+                        {{field}}
+                    </div>
+                    {% endfor %}
+
+                    <center>
+                        <button class="btn btn-primary" type="submit"> Add Plan </button>
+                    </center>
+                </form>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- --------------------------------------javascript------------------- -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    
+    function paln_update(element){
+        var url = element.getAttribute('url');
+        var plan_pk = element.getAttribute('pid');
+
+        axios.get(url)
+
+        .then(function (response) {
+            console.log(response);
+            var myModal = new bootstrap.Modal(document.getElementById('update_plan')); //modal id
+
+            var form = document.getElementById('update_plan_form');
+            form.action=url;
+            form.elements['name'].value = response.data[0][1];
+            form.elements['amount'].value = response.data[0][2];
+            form.elements['validity'].value = response.data[0][3];
+
+            myModal.show(); //to open a modal
+            //document.querySelector(".modal").style.display = "block"; // close a modal
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+
+        
+    }
+</script>
