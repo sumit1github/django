@@ -22,6 +22,9 @@ class PlanDelete(View):
 
 
 ---------------------------------------------javascript -------------------------------
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
 function delete_plan(element){
     var operation = element.getAttribute('operation');
     var tr_id = element.getAttribute('tr_id');
