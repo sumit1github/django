@@ -1,0 +1,85 @@
+
+
+--------------------------------- search from a list of data ---------------------------------
+like want to get all product of selected manaufacturer
+
+
+{% load product_catalog %}
+{% load product_cateloge_filter %}
+
+{% more_filter_options as data_dict %}
+
+<div class="col-md-12 search_filter" >
+  <!-- Manufacturer -->
+
+  <div id="ManufacturerMenu " class="common_filter">
+    <div class="list-group panel">
+      
+      <h4>Manufacturer</h4>
+      <div class="collapse show" id="Manufacturer">
+        {% menu_data_list data_dict 'manufacturer' as manufacturer_list%}
+        
+
+        <ul class="list-group" data-bs-spy="scroll">
+            {% for manufacturer in manufacturer_list%}
+            <li class="list-group-item">
+                <input filter_by="manufacturer" query="{{manufacturer|text_filter}}" onclick="termination_search(this)" class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                {{manufacturer|text_filter}}
+            </li>
+            {% endfor %}
+
+        <ul>
+
+      </div>
+    </div>
+  </div>
+  <!-- Manufacturer end-->
+
+
+  ---------------------------------------- now range filter for proce range ---------------------------------
+
+    <!-- Price range -->
+    <div id="Price " class="common_filter">
+        <div class="list-group panel">
+            <h4>Price</h4>
+            <ul class="list-group">
+            
+            <li class="list-group-item">
+                <input filter_by="$price" query="[10 TO 100]" onclick="termination_search(this)" class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                $ 10 to 100 
+            </li>
+            <li class="list-group-item">
+                <input filter_by="$price" query="[100 TO 200]" onclick="termination_search(this)" class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                $ 100 to 200
+            </li>
+            <li class="list-group-item">
+                <input filter_by="$price" query="[200 TO 300]" onclick="termination_search(this)" class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                $ 200 to 300
+            </li>
+            <li class="list-group-item">
+                <input filter_by="$price" query="[300 TO 400]" onclick="termination_search(this)" class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                $ 300 to 500
+            </li>
+            <br>
+            <li class="list-group-item range_container">
+                
+                <input type="number" filter_by="$price" id="price_min" value="0" placeholder='min' class='form-control'>
+                <span>To</span>
+                <input type="number" filter_by="$price" id="price_max" oninput="range_search(this,'price_search_butt')" placeholder='max' class='form-control'>
+
+                <button class="btn btn-primary" filter_by="$price" onclick="product_search(this)" query="[0 TO 100]" id="price_search_butt">
+                <i class="bi bi-search"></i>
+                </button>
+            </li>
+            </ul>
+        </div>
+    </div>        
+        <!-- Price range -->
+
+<div id="div1">
+    <input id="min">
+    <input id="max">
+
+</div>
+
+how to access input with id max from div1 in javascrit
