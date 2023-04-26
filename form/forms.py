@@ -7,7 +7,7 @@ context={
 
 
 from django import forms
-from django.core.validators import MaxValueValidator, MinValueValidator, FileExtensionValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, FileExtensionValidator, MaxFileSizeValidator, MinFileSizeValidator
 
 class OpportunityEditForm(forms.ModelForm):
 
@@ -37,6 +37,8 @@ class OpportunityEditForm(forms.ModelForm):
     
     file= forms.ImageField(required=False, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'gif','pdf'])])
     file.widget.attrs.update({'class': 'form-control','type':'file',,"required":"required"})
+    
+    iamge = forms.FileField(validators=[FileExtensionValidator(['jpg', 'png']), MaxFileSizeValidator(20*1024)]) # 20 = kb
 
     note = forms.CharField(required=False, label='Add Some Extra Information' , widget=forms.Textarea(attrs={"class":"form-control","rows":"2"}))
     note.widget.attrs.update({'class': 'form-control','type':'text','placeholder':'Description'})
