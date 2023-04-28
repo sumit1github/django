@@ -35,6 +35,8 @@ class OpportunityEditForm(forms.ModelForm):
     name = forms.CharField(max_length=255, label='Opportunity Name')
     name.widget.attrs.update({'class': 'form-control','type':'text','placeholder':'Name',"required":"required"})
     
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    
     file= forms.ImageField(required=False, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'gif','pdf'])])
     file.widget.attrs.update({'class': 'form-control','type':'file',,"required":"required"})
     
