@@ -30,7 +30,10 @@ class OpportunityEditForm(forms.ModelForm):
             self.fields['assigned_to'].queryset = User.objects.filter(org=user.org)
             self.fields['contact'].queryset = Contact.objects.filter(org= user.org)
             self.fields['account'].queryset = Account.objects.filter(org= user.org)
+
             
+    category = forms.ModelChoiceField(queryset = common_models.Category.objects.all())
+    category.widget.attrs.update({'class': 'form-control','type':'text'})
 
     name = forms.CharField(max_length=255, label='Opportunity Name')
     name.widget.attrs.update({'class': 'form-control','type':'text','placeholder':'Name',"required":"required"})
