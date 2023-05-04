@@ -72,3 +72,14 @@ def save(self, *args, **kwargs):
         # Save the compressed image to the model field
         self.image = models.ImageFieldFile(output, self.image.name)
     super().save(*args, **kwargs)
+    
+    
+================================================  corvert string to model ================================
+from django.apps import apps
+
+# your_app_label = <name of the app, where "Product" model is located>
+
+string_data = "Product"
+Product = apps.get_model(app_label='your_app_label', model_name=string_data)
+#Product = apps.get_model(app_label='app1_product_master', model_name=string_data)
+product_obj2 = Product.objects.all()
