@@ -8,6 +8,7 @@ context={
 
 from django import forms
 from django.core.validators import MaxValueValidator, MinValueValidator, FileExtensionValidator, MaxFileSizeValidator, MinFileSizeValidator
+from django.utils import timezone
 
 class OpportunityEditForm(forms.ModelForm):
 
@@ -72,6 +73,15 @@ class OpportunityEditForm(forms.ModelForm):
     probability = forms.IntegerField(label='Probability (Enter from 0 to 100)')
     probability.widget.attrs.update({'class': 'form-control','type':'text','placeholder':'Probability',"required":"required"})
 
+    date = forms.DateField(
+        widget=forms.DateInput(
+            attrs={
+                'class': 'form-control',
+                'type': 'date',  
+            }
+        ),
+        initial=timezone.now(),
+    )
 
     class Meta:
         model = Opportunity
