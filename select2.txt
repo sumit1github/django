@@ -1,0 +1,38 @@
+============================================= forms ===========================
+class TestProfileCreateForm(forms.ModelForm):
+    class Meta:
+        model = common_models.TestProfile
+        fields = [
+            'name',
+            'price',
+            'tests',
+        ]
+    
+    name = forms.CharField(max_length=255, label='Test Profile Name')
+    name.widget.attrs.update({'class': 'form-control','type':'text','placeholder':'Name',"required":"required"})
+
+    price = forms.IntegerField()
+    price.widget.attrs.update({'class': 'form-control','type':'number','placeholder':'Enter Price',"required":"required"})
+
+    tests = forms.ModelMultipleChoiceField(queryset = common_models.MainTests.objects.all())
+    tests.widget.attrs.update({'class': 'form-control js-example-basic-multiple',"required":"required"})
+    
+    
+    
+    
+    
+    =========================================== html ==================================================
+    
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
+     {{form.as_p}}
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+      $(document).ready(function() {
+      $('.js-example-basic-multiple').select2();
+      });
+    </script>
