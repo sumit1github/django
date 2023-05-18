@@ -83,3 +83,14 @@ string_data = "Product"
 Product = apps.get_model(app_label='your_app_label', model_name=string_data)
 #Product = apps.get_model(app_label='app1_product_master', model_name=string_data)
 product_obj2 = Product.objects.all()
+
+================================================  Query Dict to orm query ================================
+    model = models.Termination
+
+    def get(self, request): 
+        filter_by = request.GET.get("filter_by")
+        query = request.GET.get("query")
+
+        termination_list = list(self.model.objects.filter(**{f"{filter_by}__icontains": query}).values())
+        
+        return JsonResponse(termination_list, safe= False)
