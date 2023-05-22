@@ -1,0 +1,24 @@
+=============================================== html ========================================
+<form id="my_form" onsubmit="event.preventDefault();" >
+    <input name="name"/>
+    <input name="roll"/>
+    <input name="class"/>
+</form>
+<button class="btn btn-primary" onclick="form_submit()">submit</button>
+
+
+<script>
+  function form_submit(){
+    const formData = {};
+    const form = document.getElementById('my_form');
+    const inputs = form.getElementsByTagName('input');
+
+    for (let i = 0; i < inputs.length; i++) {
+        const input = inputs[i];
+        const key = input.name; // Assuming the input elements have the 'name' attribute set
+    
+        formData[key] = input.value;
+    }
+    console.log(formData);
+}
+</script>
