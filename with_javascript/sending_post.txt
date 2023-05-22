@@ -13,7 +13,7 @@
         }
 
         var headers= {
-            'X-CSRFToken': '{{csrf_token}}',
+            'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
             'Content-Type': 'application/json'
         }
         url= '{% url "app_stores:price_forast_ajax" %}'
