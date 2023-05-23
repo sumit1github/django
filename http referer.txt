@@ -1,0 +1,6 @@
+webpage
+<a style="float: right;" href="{{ request.META.HTTP_REFERER }}"><button class="btn btn-outline-primary">Back</button></a>
+
+for views.py
+
+referrer = request.META.get('HTTP_REFERER')
