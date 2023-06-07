@@ -88,9 +88,11 @@ product_obj2 = Product.objects.all()
     model = models.Termination
 
     def get(self, request): 
-        filter_by = request.GET.get("filter_by")
-        query = request.GET.get("query")
+        filter_by = request.GET.get('filter_by', None)
+        query_dict = {"user":request.user,}
+        if filter_by:
+            query_dict['status'] = filter_by
 
-        termination_list = list(self.model.objects.filter(**{f"{filter_by}__icontains": query}).values())
+        message_list = self.model.objects.filter(**query_dict).order_by('-id')
         
         return JsonResponse(termination_list, safe= False)
