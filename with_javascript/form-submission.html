@@ -8,17 +8,17 @@
 
 
 <script>
-  function form_submit(){
     const formData = {};
-    const form = document.getElementById('my_form');
-    const inputs = form.getElementsByTagName('input');
-
-    for (let i = 0; i < inputs.length; i++) {
-        const input = inputs[i];
-        const key = input.name; // Assuming the input elements have the 'name' attribute set
+    const form = document.getElementById('message_reply_form');
+    const inputs = form.querySelectorAll('input, textarea, select');
     
-        formData[key] = input.value;
+    for (let i = 0; i < inputs.length; i++) {
+      const input = inputs[i];
+      const key = input.name; // Assuming the input elements have the 'name' attribute set
+    
+      formData[key] = input.value;
     }
+    
     console.log(formData);
 }
 </script>
