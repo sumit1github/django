@@ -1,43 +1,84 @@
 pip install pillow
 pip install qrcode
 
-****************************************************case 1: On new data base entry:*****************************
-from django.db import models
+
+************************************************************ models.py **************************************************
+
+from helpers import utils
+qr_code = models.ImageField(upload_to='quote_qr', blank=True)
+def save(self, *args, **kwargs):
+
+    if not self.qr_code:
+        file_path = utils.new_qr_code(self.quoteid)
+        self.qr_code = file_path
+        
+    super().save(*args, **kwargs)
+********************************************************* views.py *******************************************************
+if not quote.qr_code:
+   url = utils.new_qr_code(quote.id)
+   quote.qr_code = url
+   quote.save()
+
+**************************************************************  utils.py **************************************************
+import uuid
+from django.conf import settings
+import boto3
+import io
+
+# qr code ..
 import qrcode
 from PIL import Image, ImageDraw
 from io import BytesIO
-from django.core.files import File
 import random
+import time
+from django.core.files import File
 
-class Company(models.Model):
-   url=models.URLField()
-   image=models.ImageField(upload_to='qrcode',blank=True)
+s3 = boto3.resource('s3')
 
-   def save(self,*args,**kwargs):
-      qrcode_img=qrcode.make(self.url)
-      canvas=Image.new("RGB", (300,300),"white")
-      draw=ImageDraw.Draw(canvas)
-      canvas.paste(qrcode_img)
-      buffer=BytesIO()
-      canvas.save(buffer,"PNG")
-      self.image.save(f'image{random.randint(0,9999)}',File(buffer),save=False)
-      canvas.close()
-      super().save(*args,**kwargs)
- 
- 
- ****************************************************case 2: adding in existing project:*****************************
- from home.models import Company
- 
- def qrcode_creation(request,id):
+def generate_rand_number(digit=5):
+    return str(int(str(uuid.uuid4().int)[:digit]))
 
-    com=Company.objects.get(id=id) <--- this com is present but does not have a qr code
-    if com.qr_code:
-        pass
-    else:
-        try:
-            Company.save(com) <---- here i am calling the save method
-        except Exception as e:
-            return HttpResponse(str(e))
+def s3_file_upload(file_path, file_obj):
     
-    context={'com':com}
-    return render(request,'company_qr.html',context)
+    s3 = boto3.resource('s3',
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_S3_REGION_NAME,
+                        
+    )
+    
+    s3_bucket = s3.Bucket(settings.AWS_STORAGE_BUCKET_NAME)
+    s3_object = s3_bucket.Object(f"{file_path}")
+    s3_object.upload_fileobj(file_obj)
+    
+    # Return the S3 URL of the uploaded file
+    latest_file_path = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_path}"
+    
+    return latest_file_path 
+
+
+def new_qr_code(quote_id):
+    embaded_data = settings.DOMAIN_NAME + f'user_home/pdf/{quote_id}/'
+    rand_number = generate_rand_number()
+    file_path = f'media/quote_qr/file{rand_number}.png'
+
+    qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
+    qr.add_data(embaded_data)
+    qr.make(fit=True)
+    qr_img = qr.make_image(fill_color="black", back_color="white")
+
+    # this setting for
+    # if debg = true it will save the qr in local
+    # else it save it to s3
+
+    if settings.DEBUG:
+        qr_img.save(file_path)
+
+    else:
+        qr_img_buffer = BytesIO()
+        qr_img.save(qr_img_buffer, format='PNG')
+        qr_img_buffer.seek(0)
+        s3_url = s3_file_upload(file_path, qr_img_buffer)
+        print("QR code uploaded to S3:", s3_url)
+    
+    return file_path[6:]
