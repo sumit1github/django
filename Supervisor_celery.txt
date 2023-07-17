@@ -1,8 +1,20 @@
-*********************************************************step 1:*********************************************************
+********************************************************* install redis *********************************************************
 first install 
 $ pip install celery
 $ pip install redis
 $ sudo apt-get install redis-server
+
+******************************************************** now configure the redis ****************************************
+sudo nano /etc/redis/redis.conf
+
+/// 
+now search using ctrl+w and search for "supervised"
+paste > supervised systemd
+
+sudo systemctl restart redis-server.service
+sudo systemctl enable redis-server.service
+sudo reboot
+sudo systemctl status redis-server.service
 
 *********************************************************step 2*********************************************************
 add to settings.py 
