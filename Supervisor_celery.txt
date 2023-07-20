@@ -110,3 +110,25 @@ sudo supervisorctl
 supervisor> start app_name
 supervisor> status
 supervisor> quit
+
+******************************************************** if redis not working *************************
+Stop the Redis service:
+sudo systemctl stop redis-server.service
+
+Remove the Redis packages:
+sudo apt-get remove --purge redis-server redis-tools
+
+Delete Redis configuration files and data:
+sudo rm -rf /etc/redis /var/lib/redis
+
+Update the package manager:
+sudo apt-get update
+
+Install Redis:
+sudo apt-get install redis-server
+
+After the installation is complete, start the Redis service:
+sudo systemctl start redis-server.service
+
+Verify the status of the Redis service to ensure it is running without any errors:
+sudo systemctl status redis-server.service
