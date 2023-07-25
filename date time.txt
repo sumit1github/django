@@ -7,3 +7,16 @@ year = todays_date.year
 
 
 time = datetime.datetime.now().strftime('%H:%M:%S')
+
+************************************** using timezone **************************
+works for django as well
+
+
+from django.utils import timezone
+today = timezone.now().date()
+
+# To get the day month and the year
+day = today.day
+month = today.month
+year = today.year
+
