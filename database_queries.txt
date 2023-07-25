@@ -37,9 +37,3 @@ from home_salary_save
 group by employee_name
 having employee_name like 'SUREN%'
 ;
-
-
-
-
-
-
