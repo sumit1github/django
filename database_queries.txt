@@ -1,0 +1,15 @@
+database queries
+
+-- select * from home_salary_save;
+-- select id, employee_name from home_salary_save where pf_deduction_amount <600;
+-- select COUNT(*) from home_salary_save where pf_deduction_amount <600;
+-- select SUM(CAST(pf_deduction_amount AS numeric)) from home_salary_save where pf_deduction_amount <600;
+-- select AVG(CAST(pf_deduction_amount AS numeric)) from home_salary_save where pf_deduction_amount <600;
+-- select * from home_salary_save where employee_name LIKE's%' or employee_name LIKE'S%';
+
+-- to how many are there with sbi account and pf_deduction_amount = 600
+select *
+from home_salary_save
+where
+ifsc_code LIKE 'SBIN%'
+AND pf_deduction_amount=600;
