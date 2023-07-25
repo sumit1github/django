@@ -1,5 +1,3 @@
-database queries
-
 -- select * from home_salary_save;
 -- select id, employee_name from home_salary_save where pf_deduction_amount <600;
 -- select COUNT(*) from home_salary_save where pf_deduction_amount <600;
@@ -7,9 +5,41 @@ database queries
 -- select AVG(CAST(pf_deduction_amount AS numeric)) from home_salary_save where pf_deduction_amount <600;
 -- select * from home_salary_save where employee_name LIKE's%' or employee_name LIKE'S%';
 
--- to how many are there with sbi account and pf_deduction_amount = 600
-select *
+-- to how many are there with sbi account and pf_deduction_amount = 600------------------
+-- select *
+-- from home_salary_save
+-- where
+-- ifsc_code LIKE 'SBIN%'
+-- AND pf_deduction_amount=600
+-- order by id;
+
+-- ============ Now grouping by name and their total sum(pf_deduction_amount) ==========
+
+select employee_name, sum(pf_deduction_amount)
 from home_salary_save
-where
-ifsc_code LIKE 'SBIN%'
-AND pf_deduction_amount=600;
+group by employee_name;
+
+
+-- ============ use condition with group using having ==========
+1. condition : employee came occurs twice
+
+select employee_name, sum(pf_deduction_amount)
+from home_salary_save
+group by employee_name
+having count(employee_name) = 2
+;
+
+
+2. condition : employee_name starting with 'SUREN'
+
+select employee_name, sum(pf_deduction_amount)
+from home_salary_save
+group by employee_name
+having employee_name like 'SUREN%'
+;
+
+
+
+
+
+
