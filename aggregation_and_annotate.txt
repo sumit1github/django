@@ -29,19 +29,21 @@ class Product(models.Model):
 Let, I want to print the category list. And number products associated with the category.
 There are more ways, like template tags, method_serializer,
  here i will use annotate
- 
- from django.db.models import Sum, Max, Min, Avg, Count
- 
- data_list=Caregory.objects.all().annotate(Count('product'))  # product is the model name
- 
- print(vars(data_list[1]))
- outut:- 
- {'_state': <django.db.models.base.ModelState object at 0x7fc4887469e0>, 'id': 2, 'name': 'cat2', 'product__count': 3}
- 
-+++++++ same way if I want to change the key name
-data_list=Caregory.objects.all().annotate(result=Count('product'))
- print(vars(data_list[1]))
 
-{'_state': <django.db.models.base.ModelState object at 0x7fc488746b60>, 'id': 2, 'name': 'cat2', 'result': 3}
+example: I have a table with salary_list in it. I want to group them on basis of name.
+--> Name can be present multiple times.
+--> in result you need to show   | name | sum(pf_deduction_amount) | how many times he is present in list |
+
+--> here the raw sql query
+
+select employee_name, sum(pf_deduction_amount),count(*) from home_salary_save
+group by employee_name
+having employee_name like 'DEV%';
+
+ 
+from django.db.models import Sum, Max, Min, Avg, Count
+data = model.objects.values('employee_name').annotate(total_pf_deduction=Sum('pf_deduction_amount'),occurence=Count('*')).filter(employee_name__startswith="DEV")
+
+
  
  
