@@ -45,5 +45,8 @@ from django.db.models import Sum, Max, Min, Avg, Count
 data = model.objects.values('employee_name').annotate(total_pf_deduction=Sum('pf_deduction_amount'),occurence=Count('*')).filter(employee_name__startswith="DEV")
 
 
+# result in aggrigate function
+data = model.objects.filter(employee_name__startswith="DEV").aggregate(total_pf_deduction=Sum('pf_deduction_amount'), occurence=Count('*'))
+out_put = {'total_pf_deduction': 5438.26, 'occurence': 20}
  
  
