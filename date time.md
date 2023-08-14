@@ -13,13 +13,19 @@ works for django as well
 
 #3333 ceate this class at helper.py ########
 
-from django.utils import timezone
+from django.conf import settings
+from datetime import datetime
+from pytz import timezone
+from datetime import timedelta
+
+
 class GetDateTime:
     def __init__(self):
-        self.today = timezone.now()
+        time_zone = timezone(settings.TIME_ZONE)
+        self.today = datetime.now(time_zone)
         
     def get_day(self):
-        print(self.today)
+        
         data = self.today.date()
 
         return data.day
@@ -36,9 +42,16 @@ class GetDateTime:
         else:
             return self.today.date()
     
+    def date_delta(self, step_day):
+        delta = timedelta(days=int(step_day))
+        new_date = self.today + delta
+        return new_date.date()
+    
     def get_time(self):
-        data = str(timezone.localtime(self.today)).split()
+        data = str(self.today).split()
         return data[1][:8]
+
+
 
 ##### views.py #####
 class MarkAttendence(APIView):
