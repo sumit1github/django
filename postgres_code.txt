@@ -8,7 +8,13 @@ sudo apt-get update
 
 --------------------------- install using docker -------------------------------
 --<> docker pull postgres
+
+# ---- to run temporary, terminal is of = service is down
 --<> docker run --name my-postgres -e POSTGRES_PASSWORD=root -p 5432:5432 postgres
+
+#run in background
+  docker run -d --name my-postgres -e POSTGRES_PASSWORD=root  -p 5432:5432 postgres
+
 # connect with the database
 --<> psql -h localhost -p 5432 -U postgres -W
 --<> docker stop my-postgres
