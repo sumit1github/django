@@ -15,8 +15,13 @@ sudo apt-get update
 #run in background
   docker run -d --name my-postgres -e POSTGRES_PASSWORD=root  -p 5432:5432 postgres
 
+# --- run existing container
+sudo docker start my-postgres
+
 # connect with the database
 --<> psql -h localhost -p 5432 -U postgres -W
+
+#-- delete the postgres container
 --<> docker stop my-postgres
 --<> docker rm my-postgres
 =========================== End install using docker ===========================
