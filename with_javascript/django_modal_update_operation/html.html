@@ -41,7 +41,13 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
-    
+    function close_modal(modal_id){
+            document.getElementById(modal_id).style.display = 'none';
+
+            var side_click_preventer = document.querySelector(".modal-backdrop");
+            side_click_preventer.classList.remove('show');
+            side_click_preventer.classList.add('hide');
+        }
     function paln_update(element){
         var url = element.getAttribute('url');
         var plan_pk = element.getAttribute('pid');
@@ -59,7 +65,6 @@
             form.elements['validity'].value = response.data[0][3];
 
             myModal.show(); //to open a modal
-            //document.querySelector(".modal").style.display = "block"; // close a modal
         })
         .catch(function (error) {
             console.log(error);
