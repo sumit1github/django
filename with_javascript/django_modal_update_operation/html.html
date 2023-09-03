@@ -42,11 +42,8 @@
 
 <script>
     function close_modal(modal_id){
-            document.getElementById(modal_id).style.display = 'none';
-
             var side_click_preventer = document.querySelector(".modal-backdrop");
-            side_click_preventer.classList.remove('show');
-            side_click_preventer.classList.add('hide');
+            side_click_preventer.remove();
         }
     function paln_update(element){
         var url = element.getAttribute('url');
