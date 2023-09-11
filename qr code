@@ -60,6 +60,15 @@ def s3_file_upload(file_path, file_obj):
 def new_qr_code(quote_id):
     embaded_data = settings.DOMAIN_NAME + f'user_home/pdf/{quote_id}/'
     rand_number = generate_rand_number()
+
+    # --- checking is media folder is present or not ---
+    media_folder = os.path.join(settings.BASE_DIR, 'media/quote_qr')
+    if not os.path.exists(media_folder):
+        os.makedirs(media_folder)
+
+    file_path = f'media/quote_qr/file{rand_number}.png'
+
+
     file_path = f'media/quote_qr/file{rand_number}.png'
 
     qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
