@@ -29,3 +29,8 @@ sudo systemctl status redis-server.service
 
 *********** install redis using docker *************
 
+docker pull redis:latest
+docker run -d --name my-redis -p 6379:6379 redis:latest
+docker exec -it my-redis redis-cli
+exit
+
