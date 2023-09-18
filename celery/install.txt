@@ -27,3 +27,5 @@ Verify the status of the Redis service to ensure it is running without any error
 sudo systemctl status redis-server.service
 
 
+*********** install redis using docker *************
+
