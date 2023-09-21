@@ -4,7 +4,8 @@ from django.core.files.storage import FileSystemStorage
     fs = FileSystemStorage()
     folder_name = f'topalert/{month_num}-{year}' 
     filename = fs.save(f'{folder_name}/{image.name}', image)
-    print('media/' +filename)
+    file_url = fs.url(filename)
+    file_path = fs.path(filename)
     
 ------------------------------------------------------- store data in s3 ----------------------------------
 #### To Upload a file
