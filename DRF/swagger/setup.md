@@ -157,11 +157,13 @@
 #### get request
 
 > something need to pass in header
+
     organization_params_in_header = openapi.Parameter(
         "org", openapi.IN_HEADER, required=True, type=openapi.TYPE_INTEGER
     )
         
 > get request with header
+
     account_get_params = [
         organization_params_in_header, # we can remove it if nothing to pass into header
         openapi.Parameter("name", openapi.IN_QUERY, type=openapi.TYPE_STRING),
