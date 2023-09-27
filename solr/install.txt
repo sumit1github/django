@@ -27,6 +27,20 @@ sudo rm -rf /opt/solr-8.9.0
 sudo rm -rf /etc/default/solr.in.sh 
 
 
+# ------------------------ instll using docker -----------------------
+sudo docker pull solr
+sudo docker run -d -p 8983:8983 --name my_solr solr
+
+# go inside the docker solr
+
+docker exec -it my_solr /bin/bash
+
+# create collection
+
+cd /bin/ &&  solr create_core -c hv_collection
+
+# ===================== install using docker =================
+
 for searching using api
 
 for multi field search
