@@ -48,8 +48,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 	last_name = models.CharField(max_length=100, null=True)
 	is_superuser = models.BooleanField(default=True)
 	is_staff = models.BooleanField(default=False)
-	created_on = models.DateField(auto_now_add=True)
 	is_active = models.BooleanField(default=True)
+	created_on = models.DateField(auto_now_add=True)
 
 	USERNAME_FIELD = "username"	
 	REQUIRED_FIELDS = ["email","password"]
