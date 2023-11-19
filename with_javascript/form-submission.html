@@ -1,24 +1,55 @@
 =============================================== html ========================================
-<form id="my_form" onsubmit="event.preventDefault();" >
-    <input name="name"/>
-    <input name="roll"/>
-    <input name="class"/>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<form id='login_form'>
+  <input class="form-control" type="email" name="email" placeholder="Email" required>
+  <input class="form-control" type="password" name="password" placeholder="PAssword" required>
+  <div class="submit_butt">
+      <button class="btn btn-outline-primary" type="submit">
+          Login
+      </button>
+  </div>
+  <button class="btn btn-primary" onclick="form_submit()">submit</button>
 </form>
-<button class="btn btn-primary" onclick="form_submit()">submit</button>
+
 
 
 <script>
-    const formData = {};
-    const form = document.getElementById('message_reply_form');
-    const inputs = form.querySelectorAll('input, textarea, select');
-    
-    for (let i = 0; i < inputs.length; i++) {
-      const input = inputs[i];
-      const key = input.name; // Assuming the input elements have the 'name' attribute set
-    
-      formData[key] = input.value;
+  // using eventlistnear
+  document.getElementById('login_form').addEventListener('submit', function(event) {
+
+    event.preventDefault(); // Prevents the default form submission
+
+    var form = document.forms['login_form'];
+
+    var email = form['email'].value;
+    var password = form['password'].value;
+
+    var headers= {
+      'Content-Type': 'application/json'
     }
-    
-    console.log(formData);
-}
+    data = JSON.stringify({
+      'email':email,
+      'password':password
+    })
+    url ='';
+    axios.post(url, data=data, { headers: headers })
+
+    .then(response => {
+
+      if(response.data.status === 200){
+        localStorage.setItem('access_token', response.data.access_token);
+
+        window.location.href =  `http://localhost:8000/order/order_list_ui`;;
+      }
+
+    })
+    .catch(error => {
+      console.error(error); // handle error
+    });
+
+  })
 </script>

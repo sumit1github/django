@@ -36,25 +36,26 @@
 <script>
     function add_product(){
         var target = document.getElementById('product_add');
-        var html = '<hr>\
+        var html = 
+        `   <hr>
             <div class="col-md-3 col-12">\
                 <label for="">Product Name / ID</label>\
                 <input class="form-control" type="text" name="product_name[]" placeholder="Name / ID" required>\
-            </div>\
+            </div>
             <div class="col-md-3 col-12">\
                 <label for="">Quantity</label>\
                 <input class="form-control" type="number" name="quantity[]" placeholder="Quantity" required>\
-            </div>\
+            </div>
             <div class="col-md-3 col-12">\
                 <label for="">Price / 1pic</label>\
                 <input class="form-control" type="text" name="unit_price[]" placeholder="Price / 1pic" required>\
-            </div>\
+            </div>
             <div class="col-md-3 col-12">\
                 <label for="">Total</label>\
                 <input class="form-control" type="text" name="total[]" placeholder="Total" required>\
-            </div>\
-            <hr>\
-        ';
+            </div>
+            <hr>
+        `;
 
         target.insertAdjacentHTML('beforeend', html);
     }

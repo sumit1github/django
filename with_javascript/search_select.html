@@ -81,14 +81,14 @@
             var value= (html_data.getAttribute('value'));
             var html= "<spna class='search_result_input'><i class='bi bi-x-square'></i><input name='assigned_to' class='form-control' placeholder='' value='"+value+"' disabled='disabled'><span>"
             
-            var html='\
-            <div onclick="delete_input(this)" class="input-group search_result_input">\
-                <span class="input-group-text" id="basic-addon1">\
-                    <i class="bi bi-x-square"></i>\
-                </span>\
-                <input type="text" name="assigned_to" class="form-control" value="'+value+'" aria-label="Input group example" aria-describedby="basic-addon1" disabled="disabled">\
-            </div>\
-            '
+            var html=`
+            <div onclick="delete_input(this)" class="input-group search_result_input">
+                <span class="input-group-text" id="basic-addon1">
+                    <i class="bi bi-x-square"></i>
+                </span>
+                <input type="text" name="assigned_to" class="form-control" value="'${value}'" aria-label="Input group example" aria-describedby="basic-addon1" disabled="disabled">
+            </div>
+            `
             var target= document.getElementById(target);
             target.innerHTML+= html;
         }
