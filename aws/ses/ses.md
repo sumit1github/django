@@ -2,43 +2,48 @@
     pip install boto3
 
 # Setting up AWS SES for Sending Emails
+# email verification vs domain verification
+
+1. **email:**
+
+    The mail can be fired from only the email address which is verified.
+
+2. **domain**
+
+    if the domain is verified, like assiduusinc.com, we can able to send the mail from any email address of assiduusinc.com.
 
 
-1. **Access SES from AWS Console:**
+# SES creation 
 
-Once logged in, go to the AWS Management Console and search for "SES" in the services search bar.
+### IAM
+1. first select a region
 
-2. **Verify Your Email Address or Domain:**
+2. create an user
+    * only programatic access
+    * assign permission
+        * sesfullacess
 
-In SES, under "Email Addresses" or "Domains," verify the email addresses or domains you plan to send emails from. This involves receiving and acting on verification emails sent by AWS SES.
+    * **generate access**
+        * select "other"
+        * download the credentical .csv file
 
-3. **Get SMTP Credentials:**
+# Domain verifcation 
+1. create identity
+2. email address
+3. using DKIM (domain key identity management)
+    * an email is going to send to email id for verification purpose
+4. we need to create the CNAME
+    * from ses we can get the txt record
+5. Now go the DNS management dashboard of the domain provider (go-daddy)
+    * update the txt record
+    * it will take some time to update
 
-To send emails programmatically through SES, you'll need SMTP credentials. These can be generated in the SES console. Go to "SMTP Settings" under "Email Sending" and create an IAM user with SMTP credentials.
 
-4. **Configure Your Application:**
-
-Integrate the SMTP credentials (SMTP server, username, password) into your application or email-sending library. Libraries like smtplib in Python can be used to send emails using the SES SMTP server.
-
-### Setting up AWS SES for Receiving Emails
-
-1. **Create SES Rule Sets and Configuration:**
-
-In SES, under "Email Receiving," you can create rule sets to define how SES handles incoming emails. Configure rules to specify the actions (e.g., save to an S3 bucket, invoke a Lambda function) to be taken upon receiving emails.
-
-2. **DNS Configuration (Optional):** 
-If you want to receive emails for a specific domain, you'll need to set up DNS records to direct incoming emails to SES. This involves updating MX records in your domain's DNS settings to point to SES.
-
-3. **Handle Incoming Emails in Your Application (if applicable):**
-
-If you want to process incoming emails in your application, configure the necessary endpoints or services to handle SES notifications or store the received emails.
-
-### Note:
-1. SES Usage and Limits: AWS SES has usage limits and a sandbox mode for new accounts. In the sandbox, you can only send emails to verified email addresses. Request a limit increase to move out of the sandbox and increase your sending limits.
-
-2. Billing and Cost: AWS SES has a pay-as-you-go pricing model. Be aware of the costs associated with sending and receiving emails based on SES pricing.
-
-3. This overview provides a general guide; the exact steps might vary slightly based on AWS updates and changes. Always refer to the official AWS SES documentation for the most accurate and detailed instructions.
+# problem: mail is going in junk
+1. for not using proper subject
+2. for the non standard mail content
+3. Due the spf record
+    * tool to check: 
 
 # ses client
     import boto3
