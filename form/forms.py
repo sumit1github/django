@@ -44,7 +44,7 @@ class OpportunityEditForm(forms.ModelForm):
     file= forms.ImageField(required=False, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'gif','pdf'])])
     file.widget.attrs.update({'class': 'form-control','type':'file',,"required":"required"})
     
-    iamge = forms.FileField(validators=[FileExtensionValidator(['jpg', 'png']), MaxFileSizeValidator(20*1024)]) # 20 = kb
+    image = forms.FileField(validators=[FileExtensionValidator(['jpg', 'png']), MaxFileSizeValidator(20*1024)]) # 20 = kb
 
     note = forms.CharField(required=False, label='Add Some Extra Information' , widget=forms.Textarea(attrs={"class":"form-control","rows":"2"}))
     note.widget.attrs.update({'class': 'form-control','type':'text','placeholder':'Description'})
@@ -72,6 +72,7 @@ class OpportunityEditForm(forms.ModelForm):
 
     probability = forms.IntegerField(label='Probability (Enter from 0 to 100)')
     probability.widget.attrs.update({'class': 'form-control','type':'text','placeholder':'Probability',"required":"required"})
+  
 
     date = forms.DateField(
         widget=forms.DateInput(
@@ -82,6 +83,8 @@ class OpportunityEditForm(forms.ModelForm):
         ),
         initial=timezone.now(),
     )
+
+  date_time = forms.DateTimeField(label='My Date and Time Field', widget=forms.DateTimeInput(attrs={'type': 'datetime-local','class':'form-control'}))
 
     class Meta:
         model = Opportunity
