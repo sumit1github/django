@@ -85,6 +85,7 @@ class OpportunityEditForm(forms.ModelForm):
     )
 
   date_time = forms.DateTimeField(label='My Date and Time Field', widget=forms.DateTimeInput(attrs={'type': 'datetime-local','class':'form-control'}))
+  time = forms.TimeField(label='Start Time', widget=forms.TimeInput(attrs={'type': 'time', 'class': 'form-control', 'placeholder':"Start Time"}))
 
     class Meta:
         model = Opportunity
