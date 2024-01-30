@@ -43,3 +43,16 @@ pip install boto3
     s3.put_object(Bucket=bucket_name, Key=f'outbound/{outboud_file_name}', Body=file_obj)
     s3.put_object(Bucket=bucket_name, Key=f'outboundarchive/{outboud_file_name}', Body=file_obj)
     file_obj.close()
+
+# get all object list inside a folder
+    prefix = 'pdfs'
+    response = s3.list_objects_v2(Bucket="bucket_name", Prefix = prefix)
+    
+    all_file_list= []
+    
+    if 'Contents' in response:
+        for obj in response['Contents'][1:]:
+            #print(obj['Key'])  # Print the object key (name)
+            all_file_list.append(obj['Key'])
+    else:
+        print('Bucket is empty')
