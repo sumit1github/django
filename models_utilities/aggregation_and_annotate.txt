@@ -48,5 +48,16 @@ data = model.objects.values('employee_name').annotate(total_pf_deduction=Sum('pf
 # result in aggrigate function
 data = model.objects.filter(employee_name__startswith="DEV").aggregate(total_pf_deduction=Sum('pf_deduction_amount'), occurence=Count('*'))
 out_put = {'total_pf_deduction': 5438.26, 'occurence': 20}
- 
- 
+
+
+### using aggrigate
+
+from django.db.models import Count, Case, When
+
+# Assuming YourModel is your actual model
+count_result = YourModel.objects.aggregate(
+    created_count=Count(Case(When(status='created', then=1))),
+    visited_count=Count(Case(When(status='visited', then=1)))
+)
+
+
